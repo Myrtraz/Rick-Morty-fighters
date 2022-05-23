@@ -1,14 +1,14 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import {View} from 'react-native';
 import Towers from '../../components/tower/Towers';
 import Container from '../../components/shared/Container'
 
-export default function TowerScreen({route, navigation}) {
-  const character = route.params;
+export default function TowerScreen({navigation}) {
+
   return (
     <>
       <Container primary>
-        <Towers navigation={navigation} character={character} /> 
+        <Towers navigation={navigation}/> 
       </Container>
     </>
   );

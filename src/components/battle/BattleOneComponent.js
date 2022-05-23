@@ -1,38 +1,45 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import {View, Text, Image, TouchableOpacity} from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import BattleModal from './BattleModal';
+import WinModal from './WinModal';
+//import SpriteSheet from 'rn-sprite-sheet';
+import CharactersContext from '../../contexts/CharactersContext';
 
 export default function BattleOneComponent({character, navigation}) {
   const [enemyHealth, setEnemyHealth] = useState(40);
-  const [hp, setHP] = useState(40);
-  const [defender, setDefender] = useState('defende')
   const [modal, setModal] = useState(<BattleModal navigation={navigation}/>); 
+  const [victory, setVictory] = useState(<WinModal navigation={navigation}/>); 
+  const enemy = Math.floor(Math.random() * 2);
+  const DATA = useContext(CharactersContext);
+  const player = DATA.getCharacter();
+  const playerHealth = player.health;
 
   const damage  = () => {
-    let dmg = Math.floor(Math.random() * 5);
     let total;
 
     if (enemyHealth === enemyHealth) {
      if (enemyHealth != 0) {
-      total = enemyHealth - parseInt(dmg);
+      total = enemyHealth - parseInt(Math.floor(Math.random() * player.max_atk));
        setEnemyHealth(total)
      }  
     }
 }
 
   const defense = () => {
-    let defense = Math.floor(Math.random() * 3);
     let total;
 
-    if (hp === hp) {
-      if (hp != 0) {
-       total = hp - parseInt(defense);
-       setHP(total)
+    if (playerHealth === playerHealth) {
+      if (playerHealth != 0) {
+       total = playerHealth - parseInt(Math.floor(Math.random() * 3));
+       total;
+       console.log(total);
+       console.log(playerHealth);
       }  
-     }
   }
+}
+
   return (
     <>
       <View style={{flex:1}}>
@@ -53,6 +60,7 @@ export default function BattleOneComponent({character, navigation}) {
             style={{width: 80, height: 80, paddingHorizontal: 10}} 
             source={{uri: 'https://rickandmortyapi.com/api/character/avatar/1.jpeg'}} 
           />
+          
         </View>
       </View>
       </View>
@@ -60,19 +68,19 @@ export default function BattleOneComponent({character, navigation}) {
       <View style={{ flexDirection: 'row', paddingVertical: 20}}>
         <View style={{ width: '60%'}}>
           <Image 
-            style={{width: 80, height: 80, paddingHorizontal: 10}} 
-            source={{uri: character.image}} 
+            style={{width: 80, height: 80,paddingHorizontal: 10}} 
+            source={{uri: player.image}} 
           />
         </View>
 
           <View style={{borderWidth: 1, borderColor: 'white', paddingVertical: 10, width: '40%'}}>
             <View>
-              <Text style={{color:'white', fontSize: 16, textAlign: 'center'}}>{character.name}</Text>
+              <Text style={{color:'white', fontSize: 16, textAlign: 'center'}}>{player.name}</Text>
             </View>
 
             <View style={{ flexDirection: 'row'}}>
               <Text style={{color:'white', fontSize: 16, paddingHorizontal: 20}}>PS</Text>
-              <Text style={{color:'white', fontSize: 16}}>{hp}/40</Text>
+              <Text style={{color:'white', fontSize: 16}}>{player.health}/40</Text>
             </View>
           </View>
       </View>

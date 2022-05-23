@@ -2,34 +2,51 @@ import React, {useEffect, useState, useContext} from 'react';
 import {View, Text, TouchableOpacity, Image, FlatList, StyleSheet} from 'react-native';
 import CharactersContext from '../../contexts/CharactersContext';
 import ApiService from '../../ApiService';
-import TowerLeftSide from './TowerLeftSide';
 import TowerRightSide from './TowerRightSide';
 
-const Item = ({item, navigation}) => (
+const transparent = {uri: '\assets\transparent_background.jpg'};
+const Item = ({playerData, item}) => (
   <View style={{flexDirection: 'row', alignItems: 'stretch', paddingHorizontal: 60}}>
-  <View style={{}}>
-    <TouchableOpacity style={{paddingHorizontal:10, paddingVertical: 10}} >
-      <Image style={styles.upload} source={{uri: item.image}} />
-    </TouchableOpacity>
-  </View>
+    <View style={{}}>
+      <TouchableOpacity style={{paddingHorizontal:10, paddingVertical: 10}} >
+        <Image style={styles.upload} source={transparent} />
+      </TouchableOpacity>
+      <TouchableOpacity style={{paddingHorizontal:10, paddingVertical: 10}} >
+        <Image style={styles.upload} source={transparent} />
+      </TouchableOpacity>
+      <TouchableOpacity style={{paddingHorizontal:10, paddingVertical: 10}} >
+        <Image style={styles.upload} source={{uri: playerData.image}} />
+      </TouchableOpacity>
+    </View>
 
-  <TowerRightSide item={item}/>
+    <TowerRightSide item={item}/>
   </View>
 );
 
-export default function Towers({navigation, character, item}) {
+export default function Towers({navigation}) {
+  const selectCharacter = useContext(CharactersContext);
+  const [characters, setCharacters] = useState([]);
+  const player = useContext(CharactersContext);
+  const playerData = player.getCharacter();
+
+  useEffect(() => {
+    const api = new ApiService();
+
+    
+  }, []);
+
   return (
     <>
       <View>
         <FlatList
-            data={[character]}
-            renderItem={({item}) => <Item item={item} navigation={navigation} />}
+            data={[characters]}
+            renderItem={({item}) => <Item playerData={playerData} item={item} navigation={navigation} />}
             keyExtractor={item => item.id + item.name }
             ItemSeparatorComponent={() => <View style={{paddingVertical: 2}} />}
             ListFooterComponent={() => 
-            <View style={{width: '50%', alignSelf: 'flex-end', paddingVertical: '50%'}}>
+            <View style={{width: '50%', alignSelf: 'flex-end', paddingVertical: '28%'}}>
               <TouchableOpacity 
-              onPress={ () => navigation.navigate('BattleScreen', character)}
+              onPress={ () => navigation.navigate('BattleScreen')}
               style={{paddingHorizontal: 10, paddingVertical: 10, borderWidth: 1, borderColor: 'white'}}>
                 <Text style={{color: 'white', alignSelf: 'center'}}>Continuar</Text>
               </TouchableOpacity>

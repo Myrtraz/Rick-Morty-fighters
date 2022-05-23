@@ -17,29 +17,5 @@ export default class ApiService {
             .then(data => {
                 cb(data)
             })
-    }
-
-    getCharacter(characterIds, cb) {
-        const queryParams = characterIds.map(personageId => "id_in=" + personageId).join("&")
-
-        if (queryParams.length) {
-            fetch(this.getHost() + '/id?' + queryParams)
-                .then(r => r.json())
-                .then(data => {
-                    cb(data)
-                    console.log(data)
-            })
-        }
-
-        /*
-            if (queryParams.length) {
-            fetch(this.getHost() + '/id?' + queryParams)
-                .then(r => r.json())
-                .then(data => {
-                    cb(data)
-                    console.log(data)
-            })
-        }
-        */
-    }
+    }  
 }

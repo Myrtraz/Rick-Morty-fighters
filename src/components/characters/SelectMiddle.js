@@ -3,36 +3,40 @@ import {View, Text, StyleSheet, FlatList, TouchableOpacity, Image} from 'react-n
 import ApiService from '../../ApiService';
 import CharactersContext from '../../contexts/CharactersContext';
 
-const Item = ({item, navigation}) => (
-  <View style={{justifyContent: 'space-between'}}>
-    <TouchableOpacity style={{paddingHorizontal:10, paddingVertical: 10}} onPress={() => navigation.navigate('TowerScreen', item)}>
-      <Image style={styles.upload} source={{uri: item.image}} />
-      <Text style={{alignSelf: 'center', color: 'white', fontSize: 20}}>{item.name}</Text>
-    </TouchableOpacity>
-  </View>
-);
-
 export default function SelectMiddle({navigation}) {
   const selectCharacter = useContext(CharactersContext);
-  const [character, setCharacter] = useState([]);
+  const [characters, setCharacters] = useState([]);
 
   useEffect(() => {
     const api = new ApiService();
 
-    api.getCharacters(character => {
-      setCharacter(character);
+    api.getCharacters(characters => {
+      setCharacters(characters);
     });
+
   }, []);
+
+  const Item = ({item, navigation}) => (
+    <View style={{justifyContent: 'space-between'}}>
+      <TouchableOpacity style={{paddingHorizontal:10, paddingVertical: 10}} onPress={() => {
+        selectCharacter.setCharacter(item)
+        navigation.navigate('TowerScreen', item)
+      }}>
+        <Image style={styles.upload} source={{uri: item.image}} />
+        <Text style={{alignSelf: 'center', color: 'white', fontSize: 20}}>{item.name}</Text>
+      </TouchableOpacity>
+    </View>
+  );
 
   return (
     <>
       <View>
         <FlatList
-          data={character}
-          renderItem={({item}) => <Item item={item} navigation={navigation} />}
+          data={characters}
+          renderItem={({item}) => <Item item={item} navigation={navigation}/>}
           keyExtractor={(_, i) => String(i)}
           ItemSeparatorComponent={() => <View style={{paddingVertical: 2}} />}
-          ListFooterComponent={() => <View style={{paddingVertical: 12}} />}
+          ListFooterComponent={() => <View style={{paddingVertical: 2}} />}
         />
       </View>
     </>

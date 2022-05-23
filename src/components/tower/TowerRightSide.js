@@ -15,13 +15,13 @@ const Item = ({item, navigation}) => (
 );
 
 export default function TowerRightSide({navigation}) {
-  const [character, setCharacter] = useState([]);
+  const [characters, setCharacters] = useState([]);
 
   useEffect(() => {
     const api = new ApiService();
 
-    api.getCharacters(character => {
-      setCharacter(character);
+    api.getCharacters(characters => {
+      setCharacters(characters);
     });
   }, []);
   
@@ -29,7 +29,7 @@ export default function TowerRightSide({navigation}) {
     <>
       <View>
         <FlatList
-            data={character}
+            data={characters}
             renderItem={({item}) => <Item item={item} navigation={navigation} />}
             keyExtractor={item => item.id + item.name }
             ItemSeparatorComponent={() => <View style={{paddingVertical: 2}} />}
